@@ -34,9 +34,9 @@ tgn.save(function(err) {
 
 
 			//get the path fron reus to barcelona
-			neo4js.path(reus, bcn, function(err, res) {
+			/*neo4js.path(reus, bcn, function(err, res) {
 				console.log(res);
-			});
+			});*/
 
 
 			//delete all nodes
@@ -44,6 +44,9 @@ tgn.save(function(err) {
 			bcn.delete();
 			tgn.delete();
 			reus.delete();
+
+			//delete relationships
+
 		});
 
 	});
