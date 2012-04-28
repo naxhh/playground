@@ -1,0 +1,1 @@
+@mocha -r should -R Spec -u bdd %1

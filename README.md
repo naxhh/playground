@@ -18,3 +18,8 @@ Never know when gonna be usefull for anyone.
 Neo4J is a test for the neo4j api in nodejs.
 You need a `neo4j database` (i'm using 1.7 on windows) to use this test and node-neo4j
 	npm install neo4j
+
+* mocha
+Mocha is a BDD/TDD test framework
+You need `mocha` framework and maybe `should` if i finally intregate it.
+    npm install -g mocha
