@@ -113,8 +113,11 @@ Node.prototype.newRelation = function(toNode, type, data, callback) {
 	if (data === undefined) 
 		data = {};
 
-	this._node.createRelationshipTo( toNode, type, data, callback);
+	this._node.createRelationshipTo( toNode._node, type, data, callback);
 }
+
+
+//test code running...
 
 var myGraph = new Graph('http://localhost:7474');
 Step (
