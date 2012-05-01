@@ -111,11 +111,6 @@ var Node = ( function(NodeData, dbConn, callback) {
 
 Node.prototype.save = function(callback) {
 	this._node.save( function(err) {
-		if (err !== undefined) {
-			console.log(err);
-		} else {
-			console.log('saved');
-		}
 		callback(err, this);
 	});
 }
