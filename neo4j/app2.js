@@ -2,32 +2,32 @@ var neo4js = require('neo4j');
 
 
 /*
- *	Graph abstraction Class
+ *  Graph abstraction Class
  *
  *  @Vars
  *
- *	var db        -> DB connection object
+ *  var db        -> DB connection object
  *  var nodeCount -> Number of noeds
  *  var nodes     -> Nodes itself in an object
  *
  *  @Creation
  *
- *	var something = new Graph( connect );
- *		@param connect = (Connection string)
+ *  var something = new Graph( connect );
+ *      @param connect = (Connection string)
  *
- *	@Methods
+ *  @Methods
  *
- *	.newNode(data)
- *		Create a node and store in nodes var.
- *		@param data = {'data' : 'value', 'data2' : 'value2'}
+ *  .newNode(data)
+ *      Create a node and store in nodes var.
+ *      @param data = {'data' : 'value', 'data2' : 'value2'}
  *
- *	.getNode(node, key)
- *		Get data from a specific node
- *		@param node = (node id or null to get all nodes)
- *		@param key can be:
- *			- null: gets all the data
- *			- single key: gets all the data of a single level
- *			- Array: gets an specific data (now just accept 2 levels array)
+ *  .getNode(node, key)
+ *      Get data from a specific node
+ *      @param node = (node id or null to get all nodes)
+ *      @param key can be:
+ *          - null: gets all the data
+ *          - single key: gets all the data of a single level
+ *          - Array: gets an specific data (now just accept 2 levels array)
  *
  */
 
@@ -68,22 +68,22 @@ Graph.prototype.newRelation = function(node, toNode, type, data) {
 //delete relationship
 
 /*
- *	Node abstraction Class
+ *  Node abstraction Class
  *	
- *	@vars
+ *  @vars
  *	
- *	var _node -> Data inside the node
+ *  var _node -> Data inside the node
  *	
- *	@Creation
+ *  @Creation
  *	
- *	var node = new Node( data, dbConn )
- *		@param data = Data to store inside the node
- *		@param dbConn = Object connection to DB
+ *  var node = new Node( data, dbConn )
+ *      @param data = Data to store inside the node
+ *      @param dbConn = Object connection to DB
  *
- *	@Methods
+ *  @Methods
  *
- *	.save()
- *		Save the node into the DB
+ *  .save()
+ *      Save the node into the DB
  *
  *	
  */
