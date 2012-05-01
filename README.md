@@ -27,3 +27,13 @@ Mocha is a BDD/TDD test framework
 You need `mocha` framework and maybe `should` if i finally intregate it.
 
     npm install -g mocha
+
+* coffee-script
+
+Here i'm testing out `coffee-script` potential with `nodeJS` and `express` so you gonna need to install them
+
+	npm install -g coffee-script
+	npm install express@2.5.9
+	npm install jade
+
+Jade is just optional but i gonna remake my express-boilerplate in coffeescript to test my skills on it
