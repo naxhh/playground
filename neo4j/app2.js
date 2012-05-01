@@ -1,5 +1,5 @@
 var neo4js = require('neo4j');
-
+var Step = require('./lib/step');
 
 /*
  *  Graph abstraction Class
@@ -19,7 +19,8 @@ var neo4js = require('neo4j');
  *
  *  .newNode(data)
  *      Create a node and store in nodes var.
- *      @param data = {'data' : 'value', 'data2' : 'value2'}
+ *      @param data     = {'data' : 'value', 'data2' : 'value2'}
+ *      @param callback = The callback
  *
  *  .getNode(node, key)
  *      Get data from a specific node
@@ -39,8 +40,8 @@ var Graph = ( function(connect) {
 	this.db = new neo4js.GraphDatabase( process.env.NEO4J_URL || connect);
 });
 
-Graph.prototype.newNode = function(data) {
-	this.nodes[ this.nodeCount ] = new Node( data, this.db );
+Graph.prototype.newNode = function(data, callback) {
+	this.nodes[ this.nodeCount ] = new Node( data, this.db, callback );
 	this.nodeCount ++;
 };
 
@@ -60,8 +61,8 @@ Graph.prototype.getNode = function(node, key) {
 //save node?
 
 //create relationship
-Graph.prototype.newRelation = function(node, toNode, type, data) {
-	this.nodes[ node ].newRelation( this.nodes[ toNode ], type, data  );
+Graph.prototype.newRelation = function(node, toNode, type, data, callback) {
+	this.nodes[ node ].newRelation( this.nodes[ toNode ], type, data, callback  );
 };
 
 //get relationship
@@ -77,52 +78,62 @@ Graph.prototype.newRelation = function(node, toNode, type, data) {
  *  @Creation
  *	
  *  var node = new Node( data, dbConn )
- *      @param data = Data to store inside the node
- *      @param dbConn = Object connection to DB
+ *      @param data     = Data to store inside the node
+ *      @param dbConn   = Object connection to DB
+ *      @param callback = Callback to pass to save method
  *
  *  @Methods
  *
  *  .save()
  *      Save the node into the DB
- *
+ *      @param callback = The callback to return when it finished
  *	
  */
-var Node = ( function(NodeData, dbConn) {
+var Node = ( function(NodeData, dbConn, callback) {
 	var _node;
 
 	this._node = dbConn.createNode(NodeData);
-	this.save();
+	this.save(callback);
 });
 
-Node.prototype.save = function() {
+Node.prototype.save = function(callback) {
 	this._node.save( function(err) {
 		if (err !== undefined) {
 			console.log(err);
+		} else {
+			console.log('saved');
 		}
+		callback(err, this);
 	});
 }
 
-Node.prototype.newRelation = function(toNode, type, data) {
+Node.prototype.newRelation = function(toNode, type, data, callback) {
 	if (type === undefined)
 		type = 'goes';
 	if (data === undefined) 
 		data = {};
 
-	this._node.createRelationshipTo( toNode, type, data, function(err, rel) {
-		//callback for err
-		console.log('err: '); console.log(err);
-		//console.log(rel);
-
-	});
+	this._node.createRelationshipTo( toNode, type, data, callback);
 }
 
 var myGraph = new Graph('http://localhost:7474');
-myGraph.newNode( { 'stop' : 'Barcelona' } );
-myGraph.newNode( { 'stop' : 'Tarragona' } );
-myGraph.newNode( { 'stop' : 'Reus' } );
+Step (
+	function () {
+		myGraph.newNode( { 'stop' : 'Barcelona' }, this.parallel() );
+		myGraph.newNode( { 'stop' : 'Tarragona' }, this.parallel() );
+		myGraph.newNode( { 'stop' : 'Reus' }, this.parallel());
+	},
 
-//console.log( myGraph.getNode( 0 , ['data', 'db'] ));
-//console.log( myGraph.getNode(0) );
-//console.log( myGraph.getNode() );
-
-myGraph.newRelation(0, 1, 'goes', {});
+	function (err, text) {
+		console.log( myGraph.getNode() );
+		//console.log( myGraph.getNode( 0 , ['data', 'db'] ));
+		//console.log( myGraph.getNode(0) );
+		return this;
+	},
+	function (err, text){
+		myGraph.newRelation(0, 1, 'goes', {}, this);
+	},
+	function(err, text) {
+		console.log(err);
+	}
+);
