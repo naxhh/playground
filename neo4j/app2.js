@@ -17,7 +17,7 @@ var Step = require('./lib/step');
  *
  *  @Methods
  *
- *  .newNode(data)
+ *  .newNode(data, callback)
  *      Create a node and store in nodes var.
  *      @param data     = {'data' : 'value', 'data2' : 'value2'}
  *      @param callback = The callback
@@ -29,6 +29,14 @@ var Step = require('./lib/step');
  *          - null: gets all the data
  *          - single key: gets all the data of a single level
  *          - Array: gets an specific data (now just accept 2 levels array)
+ *
+ *  .newRelation(node, toNode, type, data, callback)
+ *      Create a relationship bettween `node` and `toNode`
+ *      @param node      = Source node
+ *      @param toNode    = Destination node
+ *      @param type      = type rel (default 'goes')
+ *      @param data      = data to rel (default {} )
+ *      @param callback
  *
  */
 
@@ -58,7 +66,6 @@ Graph.prototype.getNode = function(node, key) {
 };
 
 //del node
-//save node?
 
 //create relationship
 Graph.prototype.newRelation = function(node, toNode, type, data, callback) {
@@ -77,17 +84,23 @@ Graph.prototype.newRelation = function(node, toNode, type, data, callback) {
  *	
  *  @Creation
  *	
- *  var node = new Node( data, dbConn )
+ *  var node = new Node( data, dbConn, callback )
  *      @param data     = Data to store inside the node
  *      @param dbConn   = Object connection to DB
- *      @param callback = Callback to pass to save method
+ *      @param callback
  *
  *  @Methods
  *
- *  .save()
+ *  .save( callback )
  *      Save the node into the DB
  *      @param callback = The callback to return when it finished
  *	
+ *  .newRelation( to, type, data, callback )
+ *      Creates a relationship betweet this node and `to` node
+ *      @param to       = destination node
+ *      @param type     = the relationship type (default 'goes')
+ *      @param data     = data to add into the relationship
+ *      @param callback
  */
 var Node = ( function(NodeData, dbConn, callback) {
 	var _node;
@@ -107,36 +120,43 @@ Node.prototype.save = function(callback) {
 	});
 }
 
-Node.prototype.newRelation = function(toNode, type, data, callback) {
+Node.prototype.newRelation = function(to, type, data, callback) {
 	if (type === undefined)
 		type = 'goes';
 	if (data === undefined) 
 		data = {};
 
-	this._node.createRelationshipTo( toNode._node, type, data, callback);
+	this._node.createRelationshipTo( to._node, type, data, callback);
 }
 
 
 //test code running...
 
+//connect to db
 var myGraph = new Graph('http://localhost:7474');
-Step (
-	function () {
+Step ( //this is just for async get sync.
+	function () { //creating nodes
 		myGraph.newNode( { 'stop' : 'Barcelona' }, this.parallel() );
 		myGraph.newNode( { 'stop' : 'Tarragona' }, this.parallel() );
 		myGraph.newNode( { 'stop' : 'Reus' }, this.parallel());
 	},
-
-	function (err, text) {
-		console.log( myGraph.getNode() );
+	function (err, text) { //get some data?
+		//console.log( myGraph.getNode() );
 		//console.log( myGraph.getNode( 0 , ['data', 'db'] ));
 		//console.log( myGraph.getNode(0) );
 		return this;
 	},
-	function (err, text){
-		myGraph.newRelation(0, 1, 'goes', {}, this);
+	function (err, text){ //creating relations
+		myGraph.newRelation(0, 1, 'goes', {}, this.parallel() );
+		myGraph.newRelation(1, 2, 'goes', {}, this.parallel() );
 	},
-	function(err, text) {
-		console.log(err);
+	function (err, text) { //errors?
+		if ( err !== undefined)
+			console.log(err);
+
+		return this;
+	},
+	function (err, text) { //get a path bettween relationships
+
 	}
 );
