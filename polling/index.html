@@ -1,0 +1,70 @@
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+timeserver=0;
+function comet(){
+	$.ajax({
+			type: "GET",
+			url: "data.php?timeserver="+timeserver,
+			success: function(datos){
+				json=eval('('+datos+')');
+				if($.trim(json['datos'])!=''){
+					$("#content").html(json['datos']+'<br />');
+					//$("body").append(json['datos']+'<br />');
+				}
+				timeserver=json['timeserver'];
+				setTimeout('comet()',1000);
+		  	},
+		  	error:function (xhr, ajaxOptions, thrownError){
+				$("#content").append('Ha ocurrido un error<br />');
+				setTimeout('comet()',1000);
+				//alert(xhr.status);
+				//alert(thrownError);
+		  	}
+	});
+}
+
+$(document).ready(function(e) {
+	//comet
+    comet();
+	
+	//enviar
+	$('#anno').keypress(function(event){
+		if (event.which == 13) { 
+			$.ajax({
+				type: "GET",
+				url: "save.php?s="+$('#anno').prop('name')+': '+$('#anno').prop('value')
+			});
+			$('#anno').prop('value', ''); //clear field
+		}
+	});
+	
+	if ($('#anno').prop('name') == 'anno') {
+		var name = prompt("Username:", "Gay");
+		$('#anno').prop('name', name);
+	}
+});
+</script>
+<style>
+	#main {
+		border: 1px solid blue;
+	}
+	#content {
+		
+	}
+</style>
+</head>
+<body>
+
+<div id="main">
+	<div id="content">
+	</div>
+	<div id="mess">
+		<input type="text" id="anno" name="anno" />
+		<input type="submit" value="S" />
+	</div>
+</div>
+
+</body>
+</html>
