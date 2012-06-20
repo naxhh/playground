@@ -1,10 +1,10 @@
 ﻿(function(Friend) {
 
 	//Dependencies
-	var Message = chat.module("message");
+	var Message = Chat.module("message");
 
 	//Shorthands
-	var app = chat.app;
+	var app = Chat.app;
 
 	//Define a friend
 	Friend.Model = Backbone.Model.extend({
@@ -19,4 +19,4 @@
 		model: Friend.Model
 	});
 
-})(chat.module("friend"));
+})(Chat.module("friend"));

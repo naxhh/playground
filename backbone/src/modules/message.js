@@ -10,4 +10,4 @@
 		model: Message.Model
 	});
 
-})(chat.module("message"));
+})(Chat.module("message"));
