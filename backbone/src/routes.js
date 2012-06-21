@@ -9,11 +9,11 @@ NaxRouter = Backbone.Router.extend({
 	},
 
 	index: function() {
-		
+		//how to check if the user is not logged in every time without cause bucle= :(
 	},
 
 	login: function() {
-		//this render login module/view
+		new Nax.User.View.Login({ model: me});
 	}
 
 });

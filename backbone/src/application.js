@@ -41,15 +41,13 @@ var router, me;
 
 //init app
 $(document).ready(function() {
-
-
 	//Templates
 	Nax.Template.fetch(function() {
-		router = new NaxRouter(); //router init
-		Backbone.history.start();
-
 		//Default user
 		me = new Nax.User.Model;
+		
+		router = new NaxRouter(); //router init
+		Backbone.history.start();
 
 		//si ya estoy logueado cargo el dashboard
 		if (me.isSignedIn()) {
