@@ -1,12 +1,18 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>I have a back bone</title>
+    <title>Backbone site</title>
 </head>
 <body>
-    <button id="add-friend">Add Friend</button>
-    <ul id="friends-list">
-    </ul>
+   <div id="menu">
+   		<ul>
+   			<li> Inicio </li>
+   			<li> <a href="">Login</a>
+   		</ul>
+   </div>
+   <div id="content">
+
+   </div>
 	
 	<!-- Third Party -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -14,12 +20,12 @@
     <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
 	
 	<!-- Core -->
+	<script src="src/routes.js"></script>
 	<script src="src/application.js"></script>
 	
 	<!-- Modules -->
-	<script src="src/modules/message.js"></script>
-	<script src="src/modules/friend.js"></script>
-
+	<script src="src/modules/user.js"></script>
+	<!-- -->
 
 </body>
 </html>

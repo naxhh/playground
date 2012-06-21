@@ -4,16 +4,15 @@ $templates = array(
 	//path => /index
 	//contents => <html>
 	array(
-		"path" => "/index",
-		"contents" => "a"
+		"path" => "/test",
+		"contents" => "<li><%= name %></li>"
 	),
 	array(
-		"path" => "/index2",
-		"contents" => "a"
+		"path" => "/login",
+		"contents" => "<a><%= test %></a>"
 	)
 );
 
-#echo json_encode($templates, JSON_FORCE_OBJECT);
+echo json_encode($templates, JSON_FORCE_OBJECT);
 
 ?>
-{{"path":"\/index","contents":"a"},{"path":"\/index2","contents":"a"}}
