@@ -42,11 +42,11 @@ var router, me;
 //init app
 $(document).ready(function() {
 
-	 router = new NaxRouter(); //router init
-	 Backbone.history.start();
 
 	//Templates
 	Nax.Template.fetch(function() {
+		router = new NaxRouter(); //router init
+		Backbone.history.start();
 
 		//Default user
 		me = new Nax.User.Model;
