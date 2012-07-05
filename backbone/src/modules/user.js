@@ -13,16 +13,18 @@
 
 		logIn: function(email, password, onFail, onSucceed) {
 			var self = this;
-			$.ajax({
-				url 	 : 'ajax/log-in.php',
-				method 	 : 'POST',
-				dataType : 'json',
-				data 	 : {email : email, password : password },
-				error 	 : function() { $.gritter.add({ title:"Ups!", text:"Se ha producido un error!"}); },
-				success  : function() { $.gritter.add({ title:"Welcome!", text:"Bienvenido!"}); router.navigate("/index", true); },
-				context  : this
-			});
-			return this;
+
+			var data = {email : email, password : password };
+			var error = function() {
+				$.gritter.add({ title:"Ups!", text:"Se ha producido un error!"});
+				return self;
+			};
+			var success = function() {
+				$.gritter.add({ title:"Welcome!", text:"Bienvenido!"});
+				router.navigate("/index", true);
+			};
+
+			Nax.Ajax.get("log-in.php", data, success, error);
 		}
 	});
 
@@ -46,7 +48,7 @@
 			this.$el.append( Nax.Template["/login"]() );
 		},
 		login : function() {
-			this.model.logIn("a", "b");
+			this.model.logIn("a", "b"); //test
 		}
 	});
 })(Nax.module("User"));

@@ -50,12 +50,8 @@ $(document).ready(function() {
 		Backbone.history.start();
 
 		//si ya estoy logueado cargo el dashboard
-		if (me.isSignedIn()) {
-			
-		//sino, cargo el login
-		} else {
+		if (!me.isSignedIn()) {
 			router.navigate("/login", true);
-
 		}
 
 	});
