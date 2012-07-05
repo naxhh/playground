@@ -1,4 +1,4 @@
-# Playground
+# The Playground
 
 Playground is just my personal site to make proof of concept and test some new features that i'm considering add to some project or i just find them great.
 
